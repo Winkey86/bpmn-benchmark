@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "mock": true,
+  "cases": [
+    {
+      "id": "01-simple",
+      "prompt": "01-simple/prompt.md",
+      "spec": "01-simple/checks.json",
+      "reference": "01-simple/reference.bpmn"
+    },
+    {
+      "id": "02-rework",
+      "prompt": "02-rework/prompt.md",
+      "spec": "02-rework/checks.json",
+      "reference": "02-rework/reference.bpmn"
+    },
+    {
+      "id": "03-parallel",
+      "prompt": "03-parallel/prompt.md",
+      "spec": "03-parallel/checks.json",
+      "reference": "03-parallel/reference.bpmn"
+    }
+  ]
+}

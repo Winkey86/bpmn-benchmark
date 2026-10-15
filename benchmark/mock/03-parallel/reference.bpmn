@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions" targetNamespace="urn:bpmn-benchmark:mock" exporter="synthetic-mock">
+  <bpmn:dataStore id="inventory_store" name="Остатки" />
+  <bpmn:collaboration id="Collaboration">
+    <bpmn:participant id="Participant" name="MOCK 03-parallel" processRef="Process" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process" isExecutable="false">
+    <bpmn:laneSet id="Lanes">
+      <bpmn:lane id="lane_0" name="Клиент">
+        <bpmn:flowNodeRef>start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>success</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>reject</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="lane_1" name="Оператор">
+        <bpmn:flowNodeRef>accept</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>split</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>join</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>decision</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>cancel</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="lane_2" name="Склад">
+        <bpmn:flowNodeRef>stock</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ship</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="lane_3" name="Финансы">
+        <bpmn:flowNodeRef>payment</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="start" name="Заказ получен" />
+    <bpmn:userTask id="accept" name="Принять заказ">
+      <bpmn:property id="accept_property_0" />
+      <bpmn:dataOutputAssociation id="data_0">
+        <bpmn:sourceRef>accept_property_0</bpmn:sourceRef>
+        <bpmn:targetRef>order</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:userTask>
+    <bpmn:parallelGateway id="split" name="Начать проверки" />
+    <bpmn:serviceTask id="stock" name="Проверить остатки">
+      <bpmn:property id="stock_property_1" />
+      <bpmn:property id="stock_property_3" />
+      <bpmn:dataInputAssociation id="data_1">
+        <bpmn:sourceRef>order</bpmn:sourceRef>
+        <bpmn:targetRef>stock_property_1</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataInputAssociation id="data_3">
+        <bpmn:sourceRef>inventory</bpmn:sourceRef>
+        <bpmn:targetRef>stock_property_3</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="payment" name="Проверить оплату">
+      <bpmn:property id="payment_property_2" />
+      <bpmn:dataInputAssociation id="data_2">
+        <bpmn:sourceRef>order</bpmn:sourceRef>
+        <bpmn:targetRef>payment_property_2</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:parallelGateway id="join" name="Проверки завершены" />
+    <bpmn:exclusiveGateway id="decision" name="Можно отгружать?" default="flow_9" />
+    <bpmn:userTask id="ship" name="Отгрузить заказ" />
+    <bpmn:userTask id="cancel" name="Отменить заказ" />
+    <bpmn:endEvent id="success" name="Заказ выполнен" />
+    <bpmn:endEvent id="reject" name="Заказ отменён" />
+    <bpmn:dataObject id="order_object" />
+    <bpmn:dataObjectReference id="order" name="Заказ" dataObjectRef="order_object" />
+    <bpmn:dataStoreReference id="inventory" name="Остатки" dataStoreRef="inventory_store" />
+    <bpmn:sequenceFlow id="flow_0" sourceRef="start" targetRef="accept" />
+    <bpmn:sequenceFlow id="flow_1" sourceRef="accept" targetRef="split" />
+    <bpmn:sequenceFlow id="flow_2" sourceRef="split" targetRef="stock" />
+    <bpmn:sequenceFlow id="flow_3" sourceRef="split" targetRef="payment" />
+    <bpmn:sequenceFlow id="flow_4" sourceRef="stock" targetRef="join" />
+    <bpmn:sequenceFlow id="flow_5" sourceRef="payment" targetRef="join" />
+    <bpmn:sequenceFlow id="flow_6" sourceRef="join" targetRef="decision" />
+    <bpmn:sequenceFlow id="flow_7" sourceRef="decision" targetRef="ship" name="Можно">
+      <bpmn:conditionExpression language="http://www.w3.org/1999/XPath" xsi:type="bpmn:tFormalExpression">$stockAvailable = true() and $paymentConfirmed = true()</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="flow_8" sourceRef="ship" targetRef="success" />
+    <bpmn:sequenceFlow id="flow_9" sourceRef="decision" targetRef="cancel" name="Нельзя" />
+    <bpmn:sequenceFlow id="flow_10" sourceRef="cancel" targetRef="reject" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram">
+    <bpmndi:BPMNPlane id="Plane" bpmnElement="Collaboration">
+      <bpmndi:BPMNShape id="shape_Participant" bpmnElement="Participant" isHorizontal="true">
+        <dc:Bounds x="40" y="40" width="1620" height="720" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_lane_0" bpmnElement="lane_0" isHorizontal="true">
+        <dc:Bounds x="70" y="40" width="1590" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_lane_1" bpmnElement="lane_1" isHorizontal="true">
+        <dc:Bounds x="70" y="220" width="1590" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_lane_2" bpmnElement="lane_2" isHorizontal="true">
+        <dc:Bounds x="70" y="400" width="1590" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_lane_3" bpmnElement="lane_3" isHorizontal="true">
+        <dc:Bounds x="70" y="580" width="1590" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start" bpmnElement="start">
+        <dc:Bounds x="192.0" y="117.0" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_accept" bpmnElement="accept">
+        <dc:Bounds x="324.0" y="285.0" width="132" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_split" bpmnElement="split">
+        <dc:Bounds x="545.0" y="290.0" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_stock" bpmnElement="stock">
+        <dc:Bounds x="684.0" y="465.0" width="132" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_payment" bpmnElement="payment">
+        <dc:Bounds x="684.0" y="645.0" width="132" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_join" bpmnElement="join">
+        <dc:Bounds x="905.0" y="290.0" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_decision" bpmnElement="decision">
+        <dc:Bounds x="1085.0" y="290.0" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_ship" bpmnElement="ship">
+        <dc:Bounds x="1224.0" y="465.0" width="132" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_cancel" bpmnElement="cancel">
+        <dc:Bounds x="1224.0" y="285.0" width="132" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_success" bpmnElement="success">
+        <dc:Bounds x="1452.0" y="117.0" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_reject" bpmnElement="reject">
+        <dc:Bounds x="1272.0" y="117.0" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_order" bpmnElement="order">
+        <dc:Bounds x="498.0" y="168.0" width="36" height="44" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_inventory" bpmnElement="inventory">
+        <dc:Bounds x="851.0" y="528.0" width="50" height="44" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="edge_flow_0" bpmnElement="flow_0">
+        <di:waypoint x="228.0" y="135.0" />
+        <di:waypoint x="276.0" y="135.0" />
+        <di:waypoint x="276.0" y="315.0" />
+        <di:waypoint x="324.0" y="315.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_1" bpmnElement="flow_1">
+        <di:waypoint x="456.0" y="315.0" />
+        <di:waypoint x="545.0" y="315.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_2" bpmnElement="flow_2">
+        <di:waypoint x="595.0" y="315.0" />
+        <di:waypoint x="639.5" y="315.0" />
+        <di:waypoint x="639.5" y="495.0" />
+        <di:waypoint x="684.0" y="495.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_3" bpmnElement="flow_3">
+        <di:waypoint x="595.0" y="315.0" />
+        <di:waypoint x="639.5" y="315.0" />
+        <di:waypoint x="639.5" y="675.0" />
+        <di:waypoint x="684.0" y="675.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_4" bpmnElement="flow_4">
+        <di:waypoint x="816.0" y="495.0" />
+        <di:waypoint x="860.5" y="495.0" />
+        <di:waypoint x="860.5" y="315.0" />
+        <di:waypoint x="905.0" y="315.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_5" bpmnElement="flow_5">
+        <di:waypoint x="816.0" y="675.0" />
+        <di:waypoint x="860.5" y="675.0" />
+        <di:waypoint x="860.5" y="315.0" />
+        <di:waypoint x="905.0" y="315.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_6" bpmnElement="flow_6">
+        <di:waypoint x="955.0" y="315.0" />
+        <di:waypoint x="1085.0" y="315.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_7" bpmnElement="flow_7">
+        <di:waypoint x="1135.0" y="315.0" />
+        <di:waypoint x="1179.5" y="315.0" />
+        <di:waypoint x="1179.5" y="495.0" />
+        <di:waypoint x="1224.0" y="495.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_8" bpmnElement="flow_8">
+        <di:waypoint x="1356.0" y="495.0" />
+        <di:waypoint x="1404.0" y="495.0" />
+        <di:waypoint x="1404.0" y="135.0" />
+        <di:waypoint x="1452.0" y="135.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_9" bpmnElement="flow_9">
+        <di:waypoint x="1135.0" y="315.0" />
+        <di:waypoint x="1224.0" y="315.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_10" bpmnElement="flow_10">
+        <di:waypoint x="1356.0" y="315.0" />
+        <di:waypoint x="1314.0" y="315.0" />
+        <di:waypoint x="1314.0" y="135.0" />
+        <di:waypoint x="1272.0" y="135.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_data_0" bpmnElement="data_0">
+        <di:waypoint x="456.0" y="315.0" />
+        <di:waypoint x="477.0" y="315.0" />
+        <di:waypoint x="477.0" y="190.0" />
+        <di:waypoint x="498.0" y="190.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_data_1" bpmnElement="data_1">
+        <di:waypoint x="534.0" y="190.0" />
+        <di:waypoint x="609.0" y="190.0" />
+        <di:waypoint x="609.0" y="495.0" />
+        <di:waypoint x="684.0" y="495.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_data_2" bpmnElement="data_2">
+        <di:waypoint x="534.0" y="190.0" />
+        <di:waypoint x="609.0" y="190.0" />
+        <di:waypoint x="609.0" y="675.0" />
+        <di:waypoint x="684.0" y="675.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_data_3" bpmnElement="data_3">
+        <di:waypoint x="851.0" y="550.0" />
+        <di:waypoint x="833.5" y="550.0" />
+        <di:waypoint x="833.5" y="495.0" />
+        <di:waypoint x="816.0" y="495.0" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,365 @@
+{
+  "selectors": {
+    "start": [
+      "Заказ получен"
+    ],
+    "accept": [
+      "Принять заказ"
+    ],
+    "split": [
+      "Начать проверки"
+    ],
+    "stock": [
+      "Проверить остатки"
+    ],
+    "payment": [
+      "Проверить оплату"
+    ],
+    "join": [
+      "Проверки завершены"
+    ],
+    "decision": [
+      "Можно отгружать?"
+    ],
+    "ship": [
+      "Отгрузить заказ"
+    ],
+    "cancel": [
+      "Отменить заказ"
+    ],
+    "success": [
+      "Заказ выполнен"
+    ],
+    "reject": [
+      "Заказ отменён"
+    ],
+    "order": [
+      "Заказ"
+    ],
+    "inventory": [
+      "Остатки"
+    ]
+  },
+  "checks": [
+    {
+      "id": "R-type-start",
+      "kind": "type",
+      "element": "start",
+      "types": [
+        "startEvent"
+      ],
+      "description": "Элемент «Заказ получен» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-type-accept",
+      "kind": "type",
+      "element": "accept",
+      "types": [
+        "task",
+        "userTask",
+        "serviceTask",
+        "manualTask",
+        "scriptTask",
+        "businessRuleTask"
+      ],
+      "description": "Элемент «Принять заказ» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-lane-accept",
+      "kind": "lane",
+      "element": "accept",
+      "lane": "Оператор",
+      "description": "«Принять заказ» выполняет роль «Оператор»."
+    },
+    {
+      "id": "R-type-split",
+      "kind": "type",
+      "element": "split",
+      "types": [
+        "parallelGateway"
+      ],
+      "description": "Элемент «Начать проверки» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-type-stock",
+      "kind": "type",
+      "element": "stock",
+      "types": [
+        "task",
+        "userTask",
+        "serviceTask",
+        "manualTask",
+        "scriptTask",
+        "businessRuleTask"
+      ],
+      "description": "Элемент «Проверить остатки» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-lane-stock",
+      "kind": "lane",
+      "element": "stock",
+      "lane": "Склад",
+      "description": "«Проверить остатки» выполняет роль «Склад»."
+    },
+    {
+      "id": "R-type-payment",
+      "kind": "type",
+      "element": "payment",
+      "types": [
+        "task",
+        "userTask",
+        "serviceTask",
+        "manualTask",
+        "scriptTask",
+        "businessRuleTask"
+      ],
+      "description": "Элемент «Проверить оплату» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-lane-payment",
+      "kind": "lane",
+      "element": "payment",
+      "lane": "Финансы",
+      "description": "«Проверить оплату» выполняет роль «Финансы»."
+    },
+    {
+      "id": "R-type-join",
+      "kind": "type",
+      "element": "join",
+      "types": [
+        "parallelGateway"
+      ],
+      "description": "Элемент «Проверки завершены» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-type-decision",
+      "kind": "type",
+      "element": "decision",
+      "types": [
+        "exclusiveGateway"
+      ],
+      "description": "Элемент «Можно отгружать?» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-type-ship",
+      "kind": "type",
+      "element": "ship",
+      "types": [
+        "task",
+        "userTask",
+        "serviceTask",
+        "manualTask",
+        "scriptTask",
+        "businessRuleTask"
+      ],
+      "description": "Элемент «Отгрузить заказ» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-lane-ship",
+      "kind": "lane",
+      "element": "ship",
+      "lane": "Склад",
+      "description": "«Отгрузить заказ» выполняет роль «Склад»."
+    },
+    {
+      "id": "R-type-cancel",
+      "kind": "type",
+      "element": "cancel",
+      "types": [
+        "task",
+        "userTask",
+        "serviceTask",
+        "manualTask",
+        "scriptTask",
+        "businessRuleTask"
+      ],
+      "description": "Элемент «Отменить заказ» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-lane-cancel",
+      "kind": "lane",
+      "element": "cancel",
+      "lane": "Оператор",
+      "description": "«Отменить заказ» выполняет роль «Оператор»."
+    },
+    {
+      "id": "R-type-success",
+      "kind": "type",
+      "element": "success",
+      "types": [
+        "endEvent"
+      ],
+      "description": "Элемент «Заказ выполнен» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-type-reject",
+      "kind": "type",
+      "element": "reject",
+      "types": [
+        "endEvent"
+      ],
+      "description": "Элемент «Заказ отменён» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-type-order",
+      "kind": "type",
+      "element": "order",
+      "types": [
+        "dataObjectReference"
+      ],
+      "description": "«Заказ» моделируется как данные/хранилище."
+    },
+    {
+      "id": "R-type-inventory",
+      "kind": "type",
+      "element": "inventory",
+      "types": [
+        "dataStoreReference"
+      ],
+      "description": "«Остатки» моделируется как данные/хранилище."
+    },
+    {
+      "id": "R-data-0",
+      "kind": "data",
+      "direction": "output",
+      "description": "Обязательная связь данных accept → order.",
+      "from": "accept",
+      "to": "order"
+    },
+    {
+      "id": "R-data-1",
+      "kind": "data",
+      "direction": "input",
+      "description": "Обязательная связь данных order → stock.",
+      "from": "order",
+      "to": "stock"
+    },
+    {
+      "id": "R-data-2",
+      "kind": "data",
+      "direction": "input",
+      "description": "Обязательная связь данных order → payment.",
+      "from": "order",
+      "to": "payment"
+    },
+    {
+      "id": "R-data-3",
+      "kind": "data",
+      "direction": "input",
+      "description": "Обязательная связь данных inventory → stock.",
+      "from": "inventory",
+      "to": "stock"
+    },
+    {
+      "id": "R-branch",
+      "kind": "flow",
+      "description": "У XOR есть обязательная прямая ветка.",
+      "from": "decision",
+      "to": "ship"
+    },
+    {
+      "id": "R-no-bypass",
+      "kind": "reachable",
+      "description": "Отгрузка невозможна в обход AND-join.",
+      "from": "start",
+      "to": "ship",
+      "avoid": [
+        "join"
+      ],
+      "expected": false
+    },
+    {
+      "id": "R-no-cancel-ship",
+      "kind": "reachable",
+      "description": "После отмены отгрузка недостижима.",
+      "from": "cancel",
+      "to": "ship",
+      "expected": false
+    },
+    {
+      "id": "J1",
+      "kind": "judge",
+      "description": "Обе проверки запускаются параллельно, AND-join ждёт обе; дополнительные ветви не позволяют принять решение раньше."
+    },
+    {
+      "id": "J2",
+      "kind": "judge",
+      "description": "Отгрузка требует наличия товара и подтверждения оплаты; default ведёт к отмене. Роли, данные и исходы соответствуют промпту."
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "S-ship",
+      "start": "start",
+      "ends": [
+        "success"
+      ],
+      "choices": {
+        "decision": [
+          "ship"
+        ]
+      },
+      "must_visit": [
+        "accept",
+        "stock",
+        "payment",
+        "join",
+        "ship"
+      ],
+      "must_not_visit": [
+        "cancel"
+      ],
+      "visit_counts": {
+        "stock": 1,
+        "payment": 1,
+        "ship": 1
+      },
+      "before": [
+        [
+          "stock",
+          "decision"
+        ],
+        [
+          "payment",
+          "decision"
+        ],
+        [
+          "join",
+          "ship"
+        ]
+      ]
+    },
+    {
+      "id": "S-cancel",
+      "start": "start",
+      "ends": [
+        "reject"
+      ],
+      "choices": {
+        "decision": [
+          "cancel"
+        ]
+      },
+      "must_visit": [
+        "accept",
+        "stock",
+        "payment",
+        "join",
+        "cancel"
+      ],
+      "must_not_visit": [
+        "ship"
+      ],
+      "before": [
+        [
+          "stock",
+          "decision"
+        ],
+        [
+          "payment",
+          "decision"
+        ]
+      ]
+    }
+  ]
+}

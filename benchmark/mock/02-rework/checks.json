@@ -1,0 +1,301 @@
+{
+  "selectors": {
+    "start": [
+      "Документ требуется"
+    ],
+    "create": [
+      "Подготовить документ"
+    ],
+    "review": [
+      "Проверить документ"
+    ],
+    "decision": [
+      "Нужна доработка?"
+    ],
+    "rework": [
+      "Доработать документ"
+    ],
+    "register": [
+      "Зарегистрировать документ"
+    ],
+    "success": [
+      "Документ зарегистрирован"
+    ],
+    "document": [
+      "Документ"
+    ],
+    "registry": [
+      "Реестр"
+    ]
+  },
+  "checks": [
+    {
+      "id": "R-type-start",
+      "kind": "type",
+      "element": "start",
+      "types": [
+        "startEvent"
+      ],
+      "description": "Элемент «Документ требуется» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-type-create",
+      "kind": "type",
+      "element": "create",
+      "types": [
+        "task",
+        "userTask",
+        "serviceTask",
+        "manualTask",
+        "scriptTask",
+        "businessRuleTask"
+      ],
+      "description": "Элемент «Подготовить документ» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-lane-create",
+      "kind": "lane",
+      "element": "create",
+      "lane": "Автор",
+      "description": "«Подготовить документ» выполняет роль «Автор»."
+    },
+    {
+      "id": "R-type-review",
+      "kind": "type",
+      "element": "review",
+      "types": [
+        "task",
+        "userTask",
+        "serviceTask",
+        "manualTask",
+        "scriptTask",
+        "businessRuleTask"
+      ],
+      "description": "Элемент «Проверить документ» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-lane-review",
+      "kind": "lane",
+      "element": "review",
+      "lane": "Специалист",
+      "description": "«Проверить документ» выполняет роль «Специалист»."
+    },
+    {
+      "id": "R-type-decision",
+      "kind": "type",
+      "element": "decision",
+      "types": [
+        "exclusiveGateway"
+      ],
+      "description": "Элемент «Нужна доработка?» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-type-rework",
+      "kind": "type",
+      "element": "rework",
+      "types": [
+        "task",
+        "userTask",
+        "serviceTask",
+        "manualTask",
+        "scriptTask",
+        "businessRuleTask"
+      ],
+      "description": "Элемент «Доработать документ» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-lane-rework",
+      "kind": "lane",
+      "element": "rework",
+      "lane": "Автор",
+      "description": "«Доработать документ» выполняет роль «Автор»."
+    },
+    {
+      "id": "R-type-register",
+      "kind": "type",
+      "element": "register",
+      "types": [
+        "task",
+        "userTask",
+        "serviceTask",
+        "manualTask",
+        "scriptTask",
+        "businessRuleTask"
+      ],
+      "description": "Элемент «Зарегистрировать документ» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-lane-register",
+      "kind": "lane",
+      "element": "register",
+      "lane": "Регистратор",
+      "description": "«Зарегистрировать документ» выполняет роль «Регистратор»."
+    },
+    {
+      "id": "R-type-success",
+      "kind": "type",
+      "element": "success",
+      "types": [
+        "endEvent"
+      ],
+      "description": "Элемент «Документ зарегистрирован» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-type-document",
+      "kind": "type",
+      "element": "document",
+      "types": [
+        "dataObjectReference"
+      ],
+      "description": "«Документ» моделируется как данные/хранилище."
+    },
+    {
+      "id": "R-type-registry",
+      "kind": "type",
+      "element": "registry",
+      "types": [
+        "dataStoreReference"
+      ],
+      "description": "«Реестр» моделируется как данные/хранилище."
+    },
+    {
+      "id": "R-data-0",
+      "kind": "data",
+      "direction": "output",
+      "description": "Обязательная связь данных create → document.",
+      "from": "create",
+      "to": "document"
+    },
+    {
+      "id": "R-data-1",
+      "kind": "data",
+      "direction": "input",
+      "description": "Обязательная связь данных document → review.",
+      "from": "document",
+      "to": "review"
+    },
+    {
+      "id": "R-data-2",
+      "kind": "data",
+      "direction": "input",
+      "description": "Обязательная связь данных document → rework.",
+      "from": "document",
+      "to": "rework"
+    },
+    {
+      "id": "R-data-3",
+      "kind": "data",
+      "direction": "output",
+      "description": "Обязательная связь данных rework → document.",
+      "from": "rework",
+      "to": "document"
+    },
+    {
+      "id": "R-data-4",
+      "kind": "data",
+      "direction": "input",
+      "description": "Обязательная связь данных document → register.",
+      "from": "document",
+      "to": "register"
+    },
+    {
+      "id": "R-data-5",
+      "kind": "data",
+      "direction": "output",
+      "description": "Обязательная связь данных register → registry.",
+      "from": "register",
+      "to": "registry"
+    },
+    {
+      "id": "R-branch",
+      "kind": "flow",
+      "description": "У XOR есть обязательная прямая ветка.",
+      "from": "decision",
+      "to": "rework"
+    },
+    {
+      "id": "R-loop",
+      "kind": "reachable",
+      "description": "После доработки можно вернуться к проверке.",
+      "from": "rework",
+      "to": "review"
+    },
+    {
+      "id": "R-register",
+      "kind": "reachable",
+      "description": "Успешное завершение невозможно в обход регистрации.",
+      "from": "start",
+      "to": "success",
+      "avoid": [
+        "register"
+      ],
+      "expected": false
+    },
+    {
+      "id": "J1",
+      "kind": "judge",
+      "description": "Документ проверяется повторно после доработки; дополнительные маршруты не обходят принятие и регистрацию."
+    },
+    {
+      "id": "J2",
+      "kind": "judge",
+      "description": "needsRework и default выражают нужные исходы; роли, чтение документа и запись в реестр соответствуют промпту."
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "S-first-pass",
+      "start": "start",
+      "ends": [
+        "success"
+      ],
+      "choices": {
+        "decision": [
+          "register"
+        ]
+      },
+      "must_visit": [
+        "create",
+        "review",
+        "register"
+      ],
+      "must_not_visit": [
+        "rework"
+      ]
+    },
+    {
+      "id": "S-rework-once",
+      "start": "start",
+      "ends": [
+        "success"
+      ],
+      "choices": {
+        "decision": [
+          "rework",
+          "register"
+        ]
+      },
+      "must_visit": [
+        "create",
+        "review",
+        "rework",
+        "register"
+      ],
+      "visit_counts": {
+        "review": 2,
+        "rework": 1,
+        "register": 1
+      },
+      "before": [
+        [
+          "review",
+          "rework"
+        ],
+        [
+          "rework",
+          "register"
+        ]
+      ]
+    }
+  ]
+}

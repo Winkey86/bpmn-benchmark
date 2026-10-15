@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+runs/
+.DS_Store
+.env
+.env.*
+
+# Local source diagrams and audit history; the public benchmark uses synthetic fixtures.
+/cases/
+/reports/
+/manifest.json
+/criteria.md
+/tools/check_access.py
+/tools/viewer.html
+/tools/vendor/bpmn-js/

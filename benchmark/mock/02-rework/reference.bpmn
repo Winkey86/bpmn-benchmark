@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions" targetNamespace="urn:bpmn-benchmark:mock" exporter="synthetic-mock">
+  <bpmn:dataStore id="registry_store" name="Реестр" />
+  <bpmn:collaboration id="Collaboration">
+    <bpmn:participant id="Participant" name="MOCK 02-rework" processRef="Process" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process" isExecutable="false">
+    <bpmn:laneSet id="Lanes">
+      <bpmn:lane id="lane_0" name="Автор">
+        <bpmn:flowNodeRef>start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>create</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>rework</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="lane_1" name="Специалист">
+        <bpmn:flowNodeRef>review</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>decision</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="lane_2" name="Регистратор">
+        <bpmn:flowNodeRef>register</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>success</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="start" name="Документ требуется" />
+    <bpmn:userTask id="create" name="Подготовить документ">
+      <bpmn:property id="create_property_0" />
+      <bpmn:dataOutputAssociation id="data_0">
+        <bpmn:sourceRef>create_property_0</bpmn:sourceRef>
+        <bpmn:targetRef>document</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:userTask>
+    <bpmn:userTask id="review" name="Проверить документ">
+      <bpmn:property id="review_property_1" />
+      <bpmn:dataInputAssociation id="data_1">
+        <bpmn:sourceRef>document</bpmn:sourceRef>
+        <bpmn:targetRef>review_property_1</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="decision" name="Нужна доработка?" default="flow_5" />
+    <bpmn:userTask id="rework" name="Доработать документ">
+      <bpmn:property id="rework_property_2" />
+      <bpmn:property id="rework_property_3" />
+      <bpmn:dataInputAssociation id="data_2">
+        <bpmn:sourceRef>document</bpmn:sourceRef>
+        <bpmn:targetRef>rework_property_2</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="data_3">
+        <bpmn:sourceRef>rework_property_3</bpmn:sourceRef>
+        <bpmn:targetRef>document</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:userTask>
+    <bpmn:userTask id="register" name="Зарегистрировать документ">
+      <bpmn:property id="register_property_4" />
+      <bpmn:property id="register_property_5" />
+      <bpmn:dataInputAssociation id="data_4">
+        <bpmn:sourceRef>document</bpmn:sourceRef>
+        <bpmn:targetRef>register_property_4</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="data_5">
+        <bpmn:sourceRef>register_property_5</bpmn:sourceRef>
+        <bpmn:targetRef>registry</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:userTask>
+    <bpmn:endEvent id="success" name="Документ зарегистрирован" />
+    <bpmn:dataObject id="document_object" />
+    <bpmn:dataObjectReference id="document" name="Документ" dataObjectRef="document_object" />
+    <bpmn:dataStoreReference id="registry" name="Реестр" dataStoreRef="registry_store" />
+    <bpmn:sequenceFlow id="flow_0" sourceRef="start" targetRef="create" />
+    <bpmn:sequenceFlow id="flow_1" sourceRef="create" targetRef="review" />
+    <bpmn:sequenceFlow id="flow_2" sourceRef="review" targetRef="decision" />
+    <bpmn:sequenceFlow id="flow_3" sourceRef="decision" targetRef="rework" name="Доработка">
+      <bpmn:conditionExpression language="http://www.w3.org/1999/XPath" xsi:type="bpmn:tFormalExpression">$needsRework = true()</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="flow_4" sourceRef="rework" targetRef="review" />
+    <bpmn:sequenceFlow id="flow_5" sourceRef="decision" targetRef="register" name="Готово" />
+    <bpmn:sequenceFlow id="flow_6" sourceRef="register" targetRef="success" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram">
+    <bpmndi:BPMNPlane id="Plane" bpmnElement="Collaboration">
+      <bpmndi:BPMNShape id="shape_Participant" bpmnElement="Participant" isHorizontal="true">
+        <dc:Bounds x="40" y="40" width="1260" height="540" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_lane_0" bpmnElement="lane_0" isHorizontal="true">
+        <dc:Bounds x="70" y="40" width="1230" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_lane_1" bpmnElement="lane_1" isHorizontal="true">
+        <dc:Bounds x="70" y="220" width="1230" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_lane_2" bpmnElement="lane_2" isHorizontal="true">
+        <dc:Bounds x="70" y="400" width="1230" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start" bpmnElement="start">
+        <dc:Bounds x="192.0" y="117.0" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_create" bpmnElement="create">
+        <dc:Bounds x="324.0" y="105.0" width="132" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_review" bpmnElement="review">
+        <dc:Bounds x="504.0" y="285.0" width="132" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_decision" bpmnElement="decision">
+        <dc:Bounds x="725.0" y="290.0" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_rework" bpmnElement="rework">
+        <dc:Bounds x="864.0" y="105.0" width="132" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_register" bpmnElement="register">
+        <dc:Bounds x="864.0" y="465.0" width="132" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_success" bpmnElement="success">
+        <dc:Bounds x="1092.0" y="477.0" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_document" bpmnElement="document">
+        <dc:Bounds x="462.0" y="168.0" width="36" height="44" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_registry" bpmnElement="registry">
+        <dc:Bounds x="1031.0" y="528.0" width="50" height="44" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="edge_flow_0" bpmnElement="flow_0">
+        <di:waypoint x="228.0" y="135.0" />
+        <di:waypoint x="324.0" y="135.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_1" bpmnElement="flow_1">
+        <di:waypoint x="456.0" y="135.0" />
+        <di:waypoint x="480.0" y="135.0" />
+        <di:waypoint x="480.0" y="315.0" />
+        <di:waypoint x="504.0" y="315.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_2" bpmnElement="flow_2">
+        <di:waypoint x="636.0" y="315.0" />
+        <di:waypoint x="725.0" y="315.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_3" bpmnElement="flow_3">
+        <di:waypoint x="775.0" y="315.0" />
+        <di:waypoint x="819.5" y="315.0" />
+        <di:waypoint x="819.5" y="135.0" />
+        <di:waypoint x="864.0" y="135.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_4" bpmnElement="flow_4">
+        <di:waypoint x="864.0" y="135.0" />
+        <di:waypoint x="750.0" y="135.0" />
+        <di:waypoint x="750.0" y="315.0" />
+        <di:waypoint x="636.0" y="315.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_5" bpmnElement="flow_5">
+        <di:waypoint x="775.0" y="315.0" />
+        <di:waypoint x="819.5" y="315.0" />
+        <di:waypoint x="819.5" y="495.0" />
+        <di:waypoint x="864.0" y="495.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_flow_6" bpmnElement="flow_6">
+        <di:waypoint x="996.0" y="495.0" />
+        <di:waypoint x="1092.0" y="495.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_data_0" bpmnElement="data_0">
+        <di:waypoint x="456.0" y="135.0" />
+        <di:waypoint x="459.0" y="135.0" />
+        <di:waypoint x="459.0" y="190.0" />
+        <di:waypoint x="462.0" y="190.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_data_1" bpmnElement="data_1">
+        <di:waypoint x="498.0" y="190.0" />
+        <di:waypoint x="501.0" y="190.0" />
+        <di:waypoint x="501.0" y="315.0" />
+        <di:waypoint x="504.0" y="315.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_data_2" bpmnElement="data_2">
+        <di:waypoint x="498.0" y="190.0" />
+        <di:waypoint x="681.0" y="190.0" />
+        <di:waypoint x="681.0" y="135.0" />
+        <di:waypoint x="864.0" y="135.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_data_3" bpmnElement="data_3">
+        <di:waypoint x="864.0" y="135.0" />
+        <di:waypoint x="681.0" y="135.0" />
+        <di:waypoint x="681.0" y="190.0" />
+        <di:waypoint x="498.0" y="190.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_data_4" bpmnElement="data_4">
+        <di:waypoint x="498.0" y="190.0" />
+        <di:waypoint x="681.0" y="190.0" />
+        <di:waypoint x="681.0" y="495.0" />
+        <di:waypoint x="864.0" y="495.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_data_5" bpmnElement="data_5">
+        <di:waypoint x="996.0" y="495.0" />
+        <di:waypoint x="1013.5" y="495.0" />
+        <di:waypoint x="1013.5" y="550.0" />
+        <di:waypoint x="1031.0" y="550.0" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

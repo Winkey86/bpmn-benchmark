@@ -1,0 +1,234 @@
+{
+  "selectors": {
+    "start": [
+      "Нужен доступ"
+    ],
+    "create": [
+      "Подать заявку"
+    ],
+    "review": [
+      "Рассмотреть заявку"
+    ],
+    "decision": [
+      "Заявка одобрена?"
+    ],
+    "grant": [
+      "Предоставить доступ"
+    ],
+    "success": [
+      "Доступ предоставлен"
+    ],
+    "notify": [
+      "Сообщить об отказе"
+    ],
+    "reject": [
+      "Отказ получен"
+    ]
+  },
+  "checks": [
+    {
+      "id": "R-type-start",
+      "kind": "type",
+      "element": "start",
+      "types": [
+        "startEvent"
+      ],
+      "description": "Элемент «Нужен доступ» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-type-create",
+      "kind": "type",
+      "element": "create",
+      "types": [
+        "task",
+        "userTask",
+        "serviceTask",
+        "manualTask",
+        "scriptTask",
+        "businessRuleTask"
+      ],
+      "description": "Элемент «Подать заявку» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-lane-create",
+      "kind": "lane",
+      "element": "create",
+      "lane": "Сотрудник",
+      "description": "«Подать заявку» выполняет роль «Сотрудник»."
+    },
+    {
+      "id": "R-type-review",
+      "kind": "type",
+      "element": "review",
+      "types": [
+        "task",
+        "userTask",
+        "serviceTask",
+        "manualTask",
+        "scriptTask",
+        "businessRuleTask"
+      ],
+      "description": "Элемент «Рассмотреть заявку» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-lane-review",
+      "kind": "lane",
+      "element": "review",
+      "lane": "Руководитель",
+      "description": "«Рассмотреть заявку» выполняет роль «Руководитель»."
+    },
+    {
+      "id": "R-type-decision",
+      "kind": "type",
+      "element": "decision",
+      "types": [
+        "exclusiveGateway"
+      ],
+      "description": "Элемент «Заявка одобрена?» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-type-grant",
+      "kind": "type",
+      "element": "grant",
+      "types": [
+        "task",
+        "userTask",
+        "serviceTask",
+        "manualTask",
+        "scriptTask",
+        "businessRuleTask"
+      ],
+      "description": "Элемент «Предоставить доступ» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-lane-grant",
+      "kind": "lane",
+      "element": "grant",
+      "lane": "Администратор",
+      "description": "«Предоставить доступ» выполняет роль «Администратор»."
+    },
+    {
+      "id": "R-type-success",
+      "kind": "type",
+      "element": "success",
+      "types": [
+        "endEvent"
+      ],
+      "description": "Элемент «Доступ предоставлен» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-type-notify",
+      "kind": "type",
+      "element": "notify",
+      "types": [
+        "task",
+        "userTask",
+        "serviceTask",
+        "manualTask",
+        "scriptTask",
+        "businessRuleTask"
+      ],
+      "description": "Элемент «Сообщить об отказе» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-lane-notify",
+      "kind": "lane",
+      "element": "notify",
+      "lane": "Руководитель",
+      "description": "«Сообщить об отказе» выполняет роль «Руководитель»."
+    },
+    {
+      "id": "R-type-reject",
+      "kind": "type",
+      "element": "reject",
+      "types": [
+        "endEvent"
+      ],
+      "description": "Элемент «Отказ получен» имеет нужный тип BPMN."
+    },
+    {
+      "id": "R-branch",
+      "kind": "flow",
+      "description": "У XOR есть обязательная прямая ветка.",
+      "from": "decision",
+      "to": "grant"
+    },
+    {
+      "id": "R-order",
+      "kind": "reachable",
+      "description": "Выдача доступа невозможна в обход рассмотрения.",
+      "from": "start",
+      "to": "grant",
+      "avoid": [
+        "review"
+      ],
+      "expected": false
+    },
+    {
+      "id": "R-refusal",
+      "kind": "reachable",
+      "description": "Из ветки отказа нельзя попасть к выдаче доступа.",
+      "from": "notify",
+      "to": "grant",
+      "expected": false
+    },
+    {
+      "id": "J1",
+      "kind": "judge",
+      "description": "Рассмотрение и одобрение обязательны для выдачи; отказ исключает выдачу, в том числе через дополнительные ветви."
+    },
+    {
+      "id": "J2",
+      "kind": "judge",
+      "description": "Смысл условия approved, default-ветки отказа, ролей и двух конечных исходов соответствует промпту."
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "S-approved",
+      "start": "start",
+      "ends": [
+        "success"
+      ],
+      "choices": {
+        "decision": [
+          "grant"
+        ]
+      },
+      "must_visit": [
+        "create",
+        "review",
+        "grant"
+      ],
+      "must_not_visit": [
+        "notify"
+      ],
+      "before": [
+        [
+          "review",
+          "grant"
+        ]
+      ]
+    },
+    {
+      "id": "S-rejected",
+      "start": "start",
+      "ends": [
+        "reject"
+      ],
+      "choices": {
+        "decision": [
+          "notify"
+        ]
+      },
+      "must_visit": [
+        "create",
+        "review",
+        "notify"
+      ],
+      "must_not_visit": [
+        "grant"
+      ]
+    }
+  ]
+}
